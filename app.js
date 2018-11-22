@@ -1,3 +1,8 @@
+const express = require('express')
+const app = express()
+
+const hbs = require('hbs')
+
 var SpotifyWebApi = require('spotify-web-api-node')
 
 // Remember to paste your credentials here
@@ -16,3 +21,17 @@ spotifyApi.clientCredentialsGrant()
     }, function (err) {
         console.log('Something went wrong when retrieving an access token', err)
     })
+
+app.use(express.static('public'))
+app.set('views', __dirname + '/views')
+app.set('view engine', 'hbs')
+
+
+//routes
+var spotifyRoutes = require('./routes/routes')
+app.use('/', spotifyRoutes)
+
+
+app.listen(3000, () => {
+    console.log('initialized')
+})
